@@ -116,6 +116,29 @@
       var submitBtn     = document.getElementById('submitBtn');
       var updateBtn     = document.getElementById('updateBtn');
 
+
+      //show data from database
+      blogsRef.on('value', showData, showDataErr)
+
+      function showData(items)
+      {
+          var content = ''
+
+          items.forEach(function(child) {
+              content += "<tr> <td>" + child.val().title + "</td> <td>" + child.val().desc + "</td>" +
+                          "<td> <a href='#' onclick='removeBlog(\""+ child.key +"\")'> DEL </a> </td>" +
+                          "<td> <a href='#' onclick='editBlog(\""+ child.key +"\")'> EDIT </a> </td> </tr>"
+          })
+
+          document.getElementById('tbody').innerHTML = content
+      }
+
+      function showDataErr(err)
+      {
+          console.log(err)
+      }
+
+      //insert data to database
       submitBtn.addEventListener('click', function() {
           blogsRef.push({
               title: title_text.value,
