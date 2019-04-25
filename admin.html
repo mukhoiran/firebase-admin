@@ -105,6 +105,33 @@
               login_btn.classList.remove('hidden')
           }
       })
+
+      //==== REALTIME DATABASE
+      var database = firebase.database();
+      var blogsRef = database.ref('blogs');
+
+      //prepare elements
+      var title_text    = document.getElementById('titleText');
+      var desc_text     = document.getElementById('descText');
+      var submitBtn     = document.getElementById('submitBtn');
+      var updateBtn     = document.getElementById('updateBtn');
+
+      submitBtn.addEventListener('click', function() {
+          blogsRef.push({
+              title: title_text.value,
+              desc: desc_text.value,
+          })
+
+          title_text.value = '';
+          desc_text.value  = '';
+      });
+
+      blogsRef.on('child_added', dataAdded);
+
+      function dataAdded() {
+          console.log('berhasil ditambah!')
+      }
+
     </script>
 
   </body>
