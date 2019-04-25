@@ -97,6 +97,7 @@
       auth.onAuthStateChanged(function(user) {
           if(user){
               // login
+              console.log('-- logged in --')
               logout_btn.classList.remove('hidden')
               login_btn.classList.add('hidden')
           }  else {
@@ -152,7 +153,7 @@
       blogsRef.on('child_added', dataAdded);
 
       function dataAdded() {
-          console.log('berhasil ditambah!')
+          console.log('sucess add!')
       }
 
       //delete data from database
@@ -160,6 +161,29 @@
       {
           database.ref('/blogs/'+ id).remove()
       }
+
+      //edit and update data
+      function editBlog(id)
+      {
+          updateBtn.setAttribute('data-id', id)
+
+          blogsRef.child(id).once('value', function(snapshot){
+              title_text.value = snapshot.val().title
+              desc_text.value  = snapshot.val().desc
+          })
+      }
+
+      updateBtn.addEventListener('click', function() {
+          var id = updateBtn.getAttribute('data-id')
+
+          blogsRef.child(id).update({
+              title: title_text.value,
+              desc: desc_text.value,
+          })
+
+          title_text.value = '';
+          desc_text.value  = '';
+      });
 
     </script>
 
