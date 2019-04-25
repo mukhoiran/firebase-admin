@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> Firebase Admin 102 </title>
+
+        <style media="screen">
+            .hidden{
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+
+    <h1>Admin Simulation Firebase</h1>
+
+    <div class="column">
+        <h2>Login Admin</h2>
+        <input type="email" id="emailText" placeholder="email"><br><br>
+        <input type="password" id="passwordText" placeholder="password"><br><br>
+
+        <button id="loginBtn">Login</button>
+        <button id="logoutBtn" class="hidden">Logout</button>
+     </div>
+
+     <hr>
+
+    <div class="column">
+        <h2>Input Data</h2>
+        <input type="text" id="titleText">
+        <input type="text" id="descText">
+        <button type="button" id="submitBtn">Submit</button>
+        <button type="button" id="updateBtn">Update</button>
+    </div>
+
+    <hr>
+    <div class="column">
+        <h2>Data-Data</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Judul</th> <th>Desc</th> <th>Delete</th> <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyArkv1Pd3gUoLStacC5hLo6fxaAu9W7YjE",
+        authDomain: "admin-e1865.firebaseapp.com",
+        databaseURL: "https://admin-e1865.firebaseio.com",
+        projectId: "admin-e1865",
+        storageBucket: "admin-e1865.appspot.com",
+        messagingSenderId: "142999389650"
+      };
+      firebase.initializeApp(config);
+
+      //===  FIREBASE AUTH
+      var auth = firebase.auth();
+      //prepare elements
+      var email_text    = document.getElementById('emailText');
+      var password_text = document.getElementById('passwordText');
+      var login_btn     = document.getElementById('loginBtn');
+      var logout_btn    = document.getElementById('logoutBtn');
+
+      login_btn.addEventListener('click', handleLogin);
+      logout_btn.addEventListener('click', handleLogout);
+
+      //------ Login
+      function handleLogin(){
+          auth.signInWithEmailAndPassword(email_text.value, password_text.value)
+              .then(function(data){
+                  console.log("-- login --")
+                  location.reload();
+              })
+              .catch(function(err){
+                  console.log("-- failed login --")
+                  console.log(err)
+              })
+      }
+
+      //------ Logout
+      function handleLogout(){
+          auth.signOut().then(function(){
+              console.log("- signout Success --")
+          }).catch(function(err){
+              console.log("-- signout Failed --")
+              console.log(err)
+          })
+      }
+
+      //--- Auth Status
+      auth.onAuthStateChanged(function(user) {
+          if(user){
+              // login
+              logout_btn.classList.remove('hidden')
+              login_btn.classList.add('hidden')
+          }  else {
+              console.log('-- user not yet sign in --')
+              logout_btn.classList.add('hidden')
+              login_btn.classList.remove('hidden')
+          }
+      })
+    </script>
+
+  </body>
+</html>
