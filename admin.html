@@ -155,6 +155,12 @@
           console.log('berhasil ditambah!')
       }
 
+      //delete data from database
+      function removeBlog(id)
+      {
+          database.ref('/blogs/'+ id).remove()
+      }
+
     </script>
 
   </body>
