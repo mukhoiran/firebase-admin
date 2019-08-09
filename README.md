@@ -1,2 +1,2 @@
 # firebase-admin
-Documentation simple admin crud with firebase
+Simple admin crud with firebase
